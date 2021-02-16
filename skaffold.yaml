@@ -1,0 +1,58 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: arturserra/client
+      context: web-client
+      docker:
+        dockerfile: Dockerfile 
+      sync:
+        manual:
+          - src: 'src/**/*.js'
+            dest: .
+    - image: arturserra/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile 
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: arturserra/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile 
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: arturserra/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile 
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: arturserra/posts
+      context: posts-service
+      docker:
+        dockerfile: Dockerfile 
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: arturserra/query
+      context: query
+      docker:
+        dockerfile: Dockerfile 
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
